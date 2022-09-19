@@ -26,7 +26,7 @@ import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_
 @Slf4j
 public class WikimediaChangesProducer {
 
-  static final String TOPIC = "wikimedia.recent.change";
+  static final String TOPIC = "wikimedia.recent.changes";
   private static KafkaProducer<String, String> kafkaProducer = null;
 
   /**
