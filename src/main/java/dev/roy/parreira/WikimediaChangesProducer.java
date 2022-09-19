@@ -14,8 +14,11 @@ import java.util.concurrent.TimeUnit;
 import static java.util.Objects.isNull;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.ACKS_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.BATCH_SIZE_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.COMPRESSION_TYPE_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.LINGER_MS_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION;
 import static org.apache.kafka.clients.producer.ProducerConfig.RETRIES_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
@@ -57,6 +60,11 @@ public class WikimediaChangesProducer {
     properties.setProperty(ACKS_CONFIG, "all");
     properties.setProperty(RETRIES_CONFIG, String.valueOf(Integer.MAX_VALUE));
     properties.setProperty(MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5");
+
+    // set batch configuration for high throughput
+    properties.setProperty(LINGER_MS_CONFIG, "20");
+    properties.setProperty(BATCH_SIZE_CONFIG, String.valueOf(1024 * 32)); // 32kB batch size
+    properties.setProperty(COMPRESSION_TYPE_CONFIG, "snappy");
 
     return properties;
   }
